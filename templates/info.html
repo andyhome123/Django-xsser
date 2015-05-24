@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block body %}
+<div id="page-wrapper">
+            <!-- /.row -->
+<div class="row">
+          <div class="col-lg-12">
+            <div class="page-header">
+              <h1 id="container">{{ a.title }}</h1>
+            </div>
+            <div class="bs-example">
+              <div class="jumbotron">{% if a.get_paramter %}<h2>receives parameters</h2>
+<h2><code>{{ a.get_paramter }}</code></h2>{% else %}<h2><code>Please set a paramter</code></h2>{% endif %}
+                    <h2>Custom Javascript</h2><pre>{{ a.js_content }}</pre>
+		    <h2>Api href</h2><pre><a href="{% url 'api' %}?id={{ a.id }}">api</a></pre>
+                    {% if a.js %}<h2>Static js file</h2><pre><a href="{% url 'js' %}?id={{ a.id }}">js_content</a></pre>{% endif %}
+                
+              </div>
+            </div>
+          </div>
+        </div>      
+        </div>
+{% endblock %}

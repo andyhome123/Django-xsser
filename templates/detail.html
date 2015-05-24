@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block head %}
+<script>
+function CheckAll(obj){
+	if(obj.checked){
+	var t=document.getElementsByName('recordid')
+for(i=0;i<t.length;i++){t[i].checked=true}
+	}else{
+	var t=document.getElementsByName('recordid')
+for(i=0;i<t.length;i++){t[i].checked=false}
+	}
+}
+function check() {
+    var ids = [];
+    t = document.getElementsByClassName('checkthis');
+    if (confirm("Sure?")) {
+
+        for (i = 0; i < t.length; i++) {
+            if (t[i].checked) {
+                ids.push(t[i].value)
+            }
+        }
+        var xml = new XMLHttpRequest();
+	xml.onreadystatechange=function(){console.log(xml.responseText)};
+        xml.open('post', '/test/', 'true');
+        data = ids.join(',')
+        message = 'recordid=' + data
+        xml.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xml.send(message);
+	setTimeout(function(){window.location.reload(true);},2000);
+    }
+}
+</script>
+{% endblock %}
+{% load core_extra %}
+{% block body %}
+<div id="page-wrapper">
+  <div class="row">
+		
+        
+        <div class="col-md-12">
+<ul class="list-inline">
+        <li><h4>{{ project.title }}</h4></li>
+ <li><form action="{% url 'change' project.id %}" method="get"><input name="id" type="hidden" value="{{ project.id}}"><p data-placement="top" data-toggle="tooltip" title="Edit"><button type="submit" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-pencil
+"></span></button></p></form></li>
+<li><form action="{% url 'info' %}" method="get"><input name="id" type="hidden" value="{{ project.id }}"><p data-placement="top" data-toggle="tooltip" title="Edit"><button type="submit" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-search
+"></span></button></p></form></li>
+<li><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-lg" onclick="check()"><span class="glyphicon glyphicon-trash"></span></button></p></li>
+</ul>
+        <div class="table-responsive">
+
+                
+              <table id="mytable" class="table table-bordred table-striped">
+                   
+                   <thead>
+                   
+                   <th><input type="checkbox" id="checkall" name="recordid" onclick="CheckAll(this)"/></th>
+<th style="padding:0;"><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-sm" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-resize-full"></span></button></p></th>
+                     <th>Time</th>
+                     <th>Data</th>
+                     <th>header</th>
+                   </thead>
+    <tbody>
+    
+
+
+    
+   {% for x,y,z,zz in l %}
+                            <tr>
+ <td width="40px"><input value="{{ z }}"
+ type="checkbox" class="checkthis" name="recordid"/></td>
+<td width="40px" ><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" ><span class="glyphicon glyphicon-resize-full"></span></button></p></td>
+                                <td width="180px">{{ zz|date:"Y-m-d H:i:s"}}</td>
+                                <td width="800px"><ul class="list-unstyled">{% for i in y %}<li>{{ i }}： {{ y|keyvalue:i }}</li>{% endfor %}</ul></td>
+<td><ul class="list-unstyled"><li>REMOTE_ADDR :{{ x.browser_data.ip  }}</li><li>HTTP_REFERER :{{ x.browser_data.referer|referer   }}</li>HTTP_USER_AGENT :{{ x.browser_data.agent  }}</ul></td>
+                            </tr>
+                            {% endfor %}
+    </tbody>
+        
+</table>
+
+<div class="clearfix"></div>
+                
+            </div>
+            
+        </div>
+	</div>
+</div>
+
+</div>
+
+{% endblock %}

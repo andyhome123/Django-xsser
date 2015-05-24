@@ -1,0 +1,6 @@
+{% load core_extra %}
+{% for item in p %}
+{% for aa in a %}
+{{ item|keyvalue:aa }}
+{% endfor %}
+{% endfor %}

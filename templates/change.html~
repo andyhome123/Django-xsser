@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block head %}
+<style>
+   div {
+   padding-bottom:20px;
+   }
+</style>
+<script>
+   function AddKey() {
+       t = document.getElementById("keyList");
+   	var b = document.createElement("input");
+       t.appendChild(b);
+       b.className = "form-control input-lg";
+   	s = document.createElement('span');
+   	s.className="input-group-btn";
+   	c = document.createElement('button');
+   	s.appendChild(c);
+   	t.appendChild(s);
+   	c.className="btn btn-lg btn-primary";
+   	c.textContent="Add";
+       c.onclick = function() {
+           cc = document.getElementById("checkbox");
+           g1 = document.createElement('label');
+   		g2 = document.createElement('input');
+   		g3 = document.createElement('div');
+   		g4 = document.createTextNode(b.value);
+   		g3.className="checkbox";
+   		g2.type="checkbox";
+   		g2.name="get_paramter";
+   		g2.value=b.value;
+   		g1.appendChild(g2);
+   		g3.appendChild(g1);
+   		cc.appendChild(g3);
+   		g1.appendChild(g4);
+   		g2.checked=true;
+   		s.remove();
+   		b.remove();
+       }
+   };
+</script>
+{% endblock %}
+{% block body %}
+<div>
+   <div class="row text-center">
+      <h2>Create Project</h2>
+   </div>
+   <form method="POST" action="/{{ a.id }}">
+      <div>
+         <label for="firstname" class="col-md-2">
+         Project Title:
+         </label>
+         <div class="col-md-9">
+            <input value="{{ a.id }}" type="hidden" name="id">
+            <pre>{{ a.title }}</pre>
+            {% csrf_token %}
+         </div>
+         <div class="col-md-1">
+            <i class="fa fa-lock fa-2x"></i>
+         </div>
+      </div>
+      <div>
+         <label for="lastname" class="col-md-2">
+         Custom Javascript:
+         </label>
+         <div class="col-md-9">
+            <textarea class="form-control" rows="3" name="js_content" value="{{ a.js_content }}" placeholder="{{ a.js_content }}"></textarea>
+         </div>
+         <div class="col-md-1">
+            <i class="fa fa-lock fa-2x"></i>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-2">
+         </div>
+         <div class="col-md-10">
+            <div class="form-group" id="checkbox">
+               {% for item in p %}
+               <div class="checkbox"><label><input type="checkbox" name="get_paramter" value="{{ item }}" checked>{{ item }}</label></div>
+               {% endfor %}
+            </div>
+         </div>
+      </div>
+</div>
+<div class="row">
+<div class="col-md-2">
+</div>
+<div class="col-md-10">
+<button class="btn btn-primary" type="button" onclick="AddKey()">Add</button>
+<button type="submit" class="btn btn-info">
+Submit
+</button>
+</div>
+</div>
+</div>  
+</form>
+<div class="input-group" style="width: 340px; text-align: center; margin: 0 auto;" id="keyList">
+</div>
+</div>
+{% endblock %}
