@@ -13,7 +13,7 @@ def createProject(request):
         try:
             ant = account.objects.get(user_id=request.user)
         except account.DoesNotExist:
-            ant.objects.create(user_id=request.user)
+            ant = account.objects.create(user_id=request.user)
         title = request.POST.get('title')
         paramter = request.POST.getlist('get_paramter', '')
         if paramter is not None:
@@ -139,7 +139,10 @@ def projectChange(request, id):
 
 @login_required(login_url="/login/")
 def showAllProject(request):
-    ant = account.objects.get(user_id=request.user)
+    try:
+        ant = account.objects.get(user_id=request.user)
+    except account.DoesNotExist:
+        ant = account.objects.create(user_id=request.user)
     a = ant.project.all()
     return render(request, 'show.html', { 'p' :a })
 
